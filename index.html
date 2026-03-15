@@ -1,0 +1,33 @@
+<!-- Подключаем библиотеку EmailJS -->
+<script src="https://cdn.jsdelivr.net"></script>
+
+<form id="myForm">
+  <input type="text" name="name" id="userName" placeholder="Введите имя" required>
+  <button type="submit">Отправить</button>
+</form>
+
+<!-- Место для уведомления -->
+<p id="status"></p>
+
+<script>
+  (function() {
+    // Инициализация вашим Public Key
+    emailjs.init("sQMK-4g1p2mU1IdqX");
+  })();
+
+  document.getElementById('myForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // ГЛАВНОЕ: отменяет переход на другой сайт
+
+    const status = document.getElementById('status');
+    status.innerText = "Отправка...";
+
+    // Отправляем форму
+    emailjs.sendForm('service_7awq98i', 'template_uf52wx1', this)
+      .then(function() {
+        status.innerText = "Успешно отправлено! ✅";
+        document.getElementById('myForm').reset(); // Очистить поле
+      }, function(error) {
+        status.innerText = "Ошибка: " + JSON.stringify(error);
+      });
+  });
+</script>
