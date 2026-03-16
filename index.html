@@ -1,33 +1,46 @@
-<!-- Подключаем библиотеку EmailJS -->
-<script src="https://cdn.jsdelivr.net"></script>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Мой сайт</title>
+</head>
+<body>
 
-<form id="myForm">
-  <input type="text" name="name" id="userName" placeholder="Введите имя" required>
-  <button type="submit">Отправить</button>
-</form>
+    <!-- Ваш контент (формы, кнопки, текст) -->
+    <form id="form">
+        <input type="text" name="from_name" placeholder="Ваше имя">
+        <button id="button" type="submit">Отправить</button>
+    </form>
 
-<!-- Место для уведомления -->
-<p id="status"></p>
+    <!-- ИСПРАВЛЕНИЕ ОШИБКИ (ВСТАВЛЯТЬ СЮДА): -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net"></script>
+    
+    <script type="text/javascript">
+      (function() {
+          // Инициализация (замените на ваш Public Key)
+          emailjs.init({
+            publicKey: "HtYE1Fe2UojNHBMOo",
+          });
+      })();
 
-<script>
-  (function() {
-    // Инициализация вашим Public Key
-    emailjs.init("HtYE1Fe2UojNHBMOo");
-  })();
+      // Ваш код, который вызывал ошибку на 15-й строке
+      window.onload = function() {
+          const btn = document.getElementById('button');
 
-  document.getElementById('myForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // ГЛАВНОЕ: отменяет переход на другой сайт
+          document.getElementById('form')
+           .addEventListener('submit', function(event) {
+             event.preventDefault();
+             btn.innerText = 'Отправка...';
 
-    const status = document.getElementById('status');
-    status.innerText = "Отправка...";
-
-    // Отправляем форму
-    emailjs.sendForm('service_7awq98i', 'template_uf52wx1', this)
-      .then(function() {
-        status.innerText = "Успешно отправлено! ✅";
-        document.getElementById('myForm').reset(); // Очистить поле
-      }, function(error) {
-        status.innerText = "Ошибка: " + JSON.stringify(error);
-      });
-  });
-</script>
+             emailjs.sendForm('service_7awq98i', 'template_uf52wx1', this)
+              .then(() => {
+                btn.innerText = 'Отправлено!';
+                alert('Успех!');
+              }, (err) => {
+                btn.innerText = 'Ошибка';
+                alert(JSON.stringify(err));
+              });
+          });
+      };
+    </script>
+</body>
+</html>
